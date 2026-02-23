@@ -1,4 +1,4 @@
-package raisetech.StudentManagement2026ver;
+package raisetech.StudentManagement2026ver.data;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
