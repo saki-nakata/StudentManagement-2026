@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"id", "fullName", "nickname", "email", "liveCity", "age", "gender"})
+@JsonPropertyOrder({"id", "fullName", "nickname", "email", "liveCity", "age", "gender", "remark",
+    "isDeleted"})
 public class Student {
 
   private int id;
@@ -17,5 +18,7 @@ public class Student {
   private String liveCity;
   private int age;
   private String gender;
+  private String remark;
+  private Boolean isDeleted;
 
 }
