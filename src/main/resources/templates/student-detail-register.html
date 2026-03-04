@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>受講生情報</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f8fc;
+      margin: 0;
+      padding: 40px 0;
+    }
+
+    h1 {
+      color: #4a90e2;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    form {
+      width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 35px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 35px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e5e5e5;
+      padding-bottom: 8px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="number"] {
+      width: 30%;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #4a90e2;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 25px;
+      margin-top: 8px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: all 0.25s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<h1>受講生新規登録</h1>
+
+<form method="POST" th:action="@{/register}" th:object="${detail}">
+
+  <h2>受講生情報</h2>
+
+  <div>
+    <label>名前：</label>
+    <input required th:field="*{student.fullName}" type="text"/>
+  </div>
+
+  <div>
+    <label>ふりがな：</label>
+    <input required th:field="*{student.furigana}" type="text"/>
+  </div>
+
+  <div>
+    <label>ニックネーム：</label>
+    <input th:field="*{student.nickname}" type="text"/>
+  </div>
+
+  <div>
+    <label>メールアドレス：</label>
+    <input required th:field="*{student.email}" type="email"/>
+  </div>
+
+  <div>
+    <label>住んでいる地域：</label>
+    <input th:field="*{student.liveCity}" type="text"/>
+  </div>
+
+  <div>
+    <label>年齢：</label>
+    <input min="0" required step="1" th:field="*{student.age}" type="number" value="30"/>
+  </div>
+
+  <div>
+    <label>性別：</label>
+    <div class="radio-group">
+      <label><input th:field="*{student.gender}" type="radio" value="男性"> 男性</label>
+      <label><input th:field="*{student.gender}" type="radio" value="女性"> 女性</label>
+      <label><input th:field="*{student.gender}" type="radio" value="その他"> その他</label>
+    </div>
+  </div>
+
+  <div>
+    <label>備考：</label>
+    <textarea rows="4" th:field="*{student.remark}"></textarea>
+  </div>
+
+  <h2>コース情報</h2>
+
+  <div>
+    <label>受講コース：</label>
+    <select th:field="*{courses[0].courseName}">
+      <option value="">コース選択</option>
+      <option value="Java">Javaコース</option>
+      <option value="AWS">AWSコース</option>
+      <option value="フロントエンド">フロントエンドコース</option>
+      <option value="デザイン">デザインコース</option>
+      <option value="Webマーケティング">Webマーケティングコース</option>
+    </select>
+  </div>
+
+  <div>
+    <label>開始日：</label>
+    <input th:field="*{courses[0].startDate}" type="date"/>
+  </div>
+
+  <button type="submit">登録</button>
+
+</form>
+
+</body>
+</html>

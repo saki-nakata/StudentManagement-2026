@@ -2,15 +2,19 @@ package raisetech.StudentManagement2026ver.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import raisetech.StudentManagement2026ver.controller.converter.StudentConverter;
 import raisetech.StudentManagement2026ver.data.Student;
 import raisetech.StudentManagement2026ver.data.StudentCourse;
 import raisetech.StudentManagement2026ver.domain.StudentDetail;
 import raisetech.StudentManagement2026ver.service.StudentService;
 
-@RestController
+@Controller
 public class StudentController {
 
   private StudentService service;
@@ -22,23 +26,27 @@ public class StudentController {
     this.converter = converter;
   }
 
-  @GetMapping("/students")
-  public List<Student> getStudents() {
-    return service.searchStudentList();
-  }
-
-  @GetMapping("/details")
-  public List<StudentDetail> getStudentDetail() {
+  @GetMapping("/list")
+  public String getStudentDetail(Model model) {
     List<Student> students = service.searchStudentList();
     List<StudentCourse> courses = service.searchCourseList();
-
-    return converter.convertStudentDetails(students, courses);
-
+    model.addAttribute("detailList", converter.convertStudentDetails(students, courses));
+    return "student-detail-list";
   }
 
-  @GetMapping("/courses")
-  public List<StudentCourse> getCourses() {
-    return service.searchCourseList();
+  @GetMapping("/new")
+  public String newStudentDetail(Model model) {
+    model.addAttribute("detail", new StudentDetail());
+    return "student-detail-register";
+  }
+
+  @PostMapping("register")
+  public String registerStudentDetail(@ModelAttribute StudentDetail detail, BindingResult result) {
+    if (result.hasErrors()) {
+      return "student-detail-register";
+    }
+    service.registerStudentDetail(detail);
+    return "redirect:/list";
   }
 
 }

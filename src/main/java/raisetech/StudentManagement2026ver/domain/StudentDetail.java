@@ -9,7 +9,7 @@ import raisetech.StudentManagement2026ver.data.StudentCourse;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"student", "course"})
+@JsonPropertyOrder({"student", "courses"})
 public class StudentDetail {
 
   private Student student;
