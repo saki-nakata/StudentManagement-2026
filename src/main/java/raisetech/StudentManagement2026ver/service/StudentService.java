@@ -38,4 +38,21 @@ public class StudentService {
 
   }
 
+  public StudentDetail getDetail(int id) {
+    StudentDetail detail = new StudentDetail();
+    detail.setStudent(repository.getStudent(id));
+    detail.setCourses(repository.getCourse(id));
+    return detail;
+  }
+
+  @Transactional
+  public void updateStudentDetail(StudentDetail detail) {
+    repository.updateStudent(detail.getStudent());
+    if (detail.getCourses() != null) {
+      for (StudentCourse course : detail.getCourses()) {
+        repository.updateCourse(course);
+      }
+    }
+  }
+
 }
