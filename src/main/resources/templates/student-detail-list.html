@@ -39,9 +39,14 @@
       background-color: #f9fbfd;
     }
 
-  input[type="checkbox"] {
+  table input[type="checkbox"] {
     transform: scale(1.5);
   }
+
+  td a {
+    font-style: italic;
+  }
+
   </style>
 </head>
 
@@ -61,7 +66,7 @@
     <th>年齢</th>
     <th>性別</th>
     <th>備考</th>
-    <th>論理削除</th>
+    <th>キャンセル</th>
     <th>コース名</th>
     <th>開始日</th>
     <th>終了予定日</th>
@@ -81,60 +86,72 @@
         <!-- 1行目だけstudent情報 -->
         <td th:if="${stat.index == 0}"
             th:rowspan="${courseSize}">
-          <a th:href="@{/edit/{id}(id=*{student.id})}" th:text="*{student.id}">
+          <a th:href="@{/edit/{id}(id=*{student.id})}" th:id="'id' + *{student.id}"
+             th:text="*{student.id}">
             9999
           </a>
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'fullName_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.fullName}">
           RaiseTech
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'furigana_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.furigana}">
           れいずてっく
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'nickname_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.nickname}">
           テックん
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'email_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.email}">
           raise-tech@example.com
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'liveCity_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.liveCity}">
           日本
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'age_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.age}">
           6
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'gender_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.gender}">
           その他
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'remark_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}"
             th:text="*{student.remark}">
           学習中
         </td>
-        <td th:if="${stat.index == 0}"
+        <td th:id="'isDeleted_' + *{student.id}"
+            th:if="${stat.index == 0}"
             th:rowspan="${courseSize}">
           <input disabled th:checked="*{student.isDeleted}" type="checkbox">
         </td>
 
 
         <!-- コース情報 -->
-        <td th:text="${course.courseName+ 'コース'}">Java</td>
-        <td th:text="${course.startDate}">2026/2/1</td>
-        <td th:text="${course.endDate}">2027/2/1</td>
+        <td th:id="'courseName_' + ${course.id}"
+            th:text="${course.courseName+ 'コース'}">Java
+        </td>
+        <td th:id="'startDate_' + ${course.id}" th:text="${course.startDate}">2026/2/1</td>
+        <td th:id="'endDate_' + ${course.id}" th:text="${course.endDate}">2027/2/1</td>
 
       </tr>
     </th:block>
@@ -144,20 +161,22 @@
       <tr>
         <td>
           <a th:href="@{/edit/{id}(id=*{student.id})}"
+             th:id="'id_' + *{student.id}"
              th:text="*{student.id}">9999</a>
         </td>
-        <td th:text="*{student.fullName}">RaiseTech</td>
-        <td th:text="*{student.furigana}">れいずてっく</td>
-        <td th:text="*{student.nickname}">てっくん</td>
-        <td th:text="*{student.email}">raise-tech@example.com</td>
-        <td th:text="*{student.liveCity}">日本</td>
-        <td th:text="*{student.age}">6</td>
-        <td th:text="*{student.gender}">その他</td>
-        <td th:text="*{student.remark}">学習中</td>
+        <td th:id="'fullName_' + *{student.id}" th:text="*{student.fullName}">RaiseTech</td>
+        <td th:id="'furigana_' + *{student.id}" th:text="*{student.furigana}">れいずてっく</td>
+        <td th:id="'nickname_' + *{student.id}" th:text="*{student.nickname}">てっくん</td>
+        <td th:id="'email_' + *{student.id}" th:text="*{student.email}">raise-tech@example.com</td>
+        <td th:id="'liveCity_' + *{student.id}" th:text="*{student.liveCity}">日本</td>
+        <td th:id="'age_' + *{student.id}" th:text="*{student.age}">6</td>
+        <td th:id="'gender_' + *{student.id}" th:text="*{student.gender}">その他</td>
+        <td th:id="'remark_' + *{student.id}" th:text="*{student.remark}">学習中</td>
         <td>
-          <input disabled th:checked="*{student.isDeleted}" type="checkbox">
+          <input disabled th:checked="*{student.isDeleted}" th:id="'isDeleted_' + *{student.id}"
+                 type="checkbox">
         </td>
-        <td colspan="3">コース情報なし</td>
+        <td colspan="3" th:id="'course_' + *{student.id}">コース情報なし</td>
       </tr>
     </th:block>
 
