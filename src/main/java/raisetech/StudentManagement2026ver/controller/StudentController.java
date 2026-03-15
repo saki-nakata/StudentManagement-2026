@@ -64,7 +64,6 @@ public class StudentController {
     }
     service.updateStudentDetail(detail);
     return "redirect:/list";
-
   }
 
 }

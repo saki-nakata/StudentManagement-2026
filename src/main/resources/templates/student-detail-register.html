@@ -39,7 +39,7 @@
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 18px;
     }
 
     input[type="text"],
@@ -51,7 +51,7 @@
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 16px;
       box-sizing: border-box;
     }
 
@@ -64,7 +64,7 @@
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 16px;
       box-sizing: border-box;
       resize: vertical;
     }
@@ -84,6 +84,16 @@
 
     .radio-group label {
       font-weight: normal;
+    }
+
+    #courseName {
+      width: 50%; /* 元は100%なので50%にして狭く */
+      display: inline-block; /* 幅を指定する場合はinline-blockにすると自然 */
+    }
+
+    #startDate {
+      width: 40%; /* 元は100%なので40%にして狭く */
+      display: inline-block; /* 幅を指定する場合はinline-blockにすると自然 */
     }
 
     button {
@@ -116,38 +126,38 @@
   <h2>受講生情報</h2>
 
   <div>
-    <label>名前：</label>
-    <input required th:field="*{student.fullName}" type="text"/>
+    <label for="fullName">名前：</label>
+    <input id="fullName" required th:field="*{student.fullName}" type="text"/>
   </div>
 
   <div>
-    <label>ふりがな：</label>
-    <input required th:field="*{student.furigana}" type="text"/>
+    <label for="furigana">ふりがな：</label>
+    <input id="furigana" required th:field="*{student.furigana}" type="text"/>
   </div>
 
   <div>
-    <label>ニックネーム：</label>
-    <input th:field="*{student.nickname}" type="text"/>
+    <label for="nickname">ニックネーム：</label>
+    <input id="nickname" th:field="*{student.nickname}" type="text"/>
   </div>
 
   <div>
-    <label>メールアドレス：</label>
-    <input required th:field="*{student.email}" type="email"/>
+    <label for="email">メールアドレス：</label>
+    <input id="email" required th:field="*{student.email}" type="email"/>
   </div>
 
   <div>
-    <label>住んでいる地域：</label>
-    <input th:field="*{student.liveCity}" type="text"/>
+    <label for="liveCity">住んでいる地域：</label>
+    <input id="liveCity" th:field="*{student.liveCity}" type="text"/>
   </div>
 
   <div>
-    <label>年齢：</label>
-    <input min="0" required step="1" th:field="*{student.age}" type="number" value="30"/>
+    <label for="age">年齢：</label>
+    <input id="age" min="0" required step="1" th:field="*{student.age}" type="number"/>
   </div>
 
   <div>
-    <label>性別：</label>
-    <div class="radio-group">
+    <label for="gender">性別：</label>
+    <div class="radio-group" id="gender">
       <label><input th:field="*{student.gender}" type="radio" value="男性"> 男性</label>
       <label><input th:field="*{student.gender}" type="radio" value="女性"> 女性</label>
       <label><input th:field="*{student.gender}" type="radio" value="その他"> その他</label>
@@ -155,15 +165,15 @@
   </div>
 
   <div>
-    <label>備考：</label>
-    <textarea rows="4" th:field="*{student.remark}"></textarea>
+    <label for="remark">備考：</label>
+    <textarea id="remark" rows="4" th:field="*{student.remark}"></textarea>
   </div>
 
   <h2>コース情報</h2>
 
   <div>
-    <label>受講コース：</label>
-    <select th:field="*{courses[0].courseName}">
+    <label for="courseName">受講コース：</label>
+    <select id="courseName" th:field="*{courses[0].courseName}">
       <option value="">コース選択</option>
       <option value="Java">Javaコース</option>
       <option value="AWS">AWSコース</option>
@@ -174,8 +184,8 @@
   </div>
 
   <div>
-    <label>開始日：</label>
-    <input th:field="*{courses[0].startDate}" type="date"/>
+    <label for="startDate">開始日：</label>
+    <input id="startDate" th:field="*{courses[0].startDate}" type="date"/>
   </div>
 
   <button type="submit">登録</button>
