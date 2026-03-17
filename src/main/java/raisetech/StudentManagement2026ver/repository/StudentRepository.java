@@ -26,7 +26,7 @@ public interface StudentRepository {
 
   @Insert(
       "INSERT INTO students (full_name, furigana, nickname, email, live_city, age, gender, remark, is_deleted) "
-          + "VALUES (#{fullName}, #{furigana}, #{nickname}, #{email}, #{liveCity}, #{age}, #{gender}, #{remark}, 0)")
+          + "VALUES (#{fullName}, #{furigana}, #{nickname}, #{email}, #{liveCity}, #{age}, #{gender}, #{remark}, #{isDeleted})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudent(Student student);
 
