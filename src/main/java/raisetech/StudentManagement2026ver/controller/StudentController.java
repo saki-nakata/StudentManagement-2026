@@ -27,14 +27,14 @@ public class StudentController {
   }
 
   @GetMapping("/list")
-  public List<StudentDetail> getStudentDetail() {
+  public List<StudentDetail> getStudentDetails() {
     List<Student> students = service.searchStudentList();
     List<StudentCourse> courses = service.searchCourseList();
     return converter.convertStudentDetails(students, courses);
   }
 
   @GetMapping("/student/{id}")
-  public StudentDetail editStudentDetail(@PathVariable int id) {
+  public StudentDetail getStudentDetail(@PathVariable int id) {
     return service.getDetail(id);
   }
 
