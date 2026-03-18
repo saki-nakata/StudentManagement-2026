@@ -27,22 +27,21 @@ public class StudentService {
     return repository.courses();
   }
 
-  @Transactional
-  public void registerStudentDetail(StudentDetail detail) {
-    repository.registerStudent(detail.getStudent());
-
-    StudentCourse course = detail.getCourses().get(0);
-    course.setStudentId(detail.getStudent().getId());
-    course.setEndDate(course.getStartDate().plusYears(1));
-    repository.registerCourse(course);
-
-  }
-
   public StudentDetail getDetail(int id) {
     StudentDetail detail = new StudentDetail();
     detail.setStudent(repository.getStudent(id));
     detail.setCourses(repository.getCourse(id));
     return detail;
+  }
+
+  @Transactional
+  public void registerStudentDetail(StudentDetail detail) {
+    detail.getStudent().setIsDeleted(false);
+    repository.registerStudent(detail.getStudent());
+    StudentCourse course = detail.getCourses().get(0);
+    course.setStudentId(detail.getStudent().getId());
+    course.setEndDate(course.getStartDate().plusYears(1));
+    repository.registerCourse(course);
   }
 
   @Transactional
