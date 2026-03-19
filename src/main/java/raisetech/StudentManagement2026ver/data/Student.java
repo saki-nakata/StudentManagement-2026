@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 受講生情報を表すオブジェクトです。
+ */
 @Getter
 @Setter
 @JsonPropertyOrder({"id", "fullName", "furigana", "nickname", "email", "liveCity", "age", "gender",
@@ -19,6 +22,6 @@ public class Student {
   private int age;
   private String gender;
   private String remark;
-  private Boolean isDeleted;
+  private boolean isDeleted;
 
 }
