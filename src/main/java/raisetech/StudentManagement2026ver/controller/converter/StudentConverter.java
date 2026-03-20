@@ -8,9 +8,19 @@ import raisetech.StudentManagement2026ver.data.Student;
 import raisetech.StudentManagement2026ver.data.StudentCourse;
 import raisetech.StudentManagement2026ver.domain.StudentDetail;
 
+/**
+ * 受講生情報とコース情報を受講生詳細に変換するConverterです。
+ */
 @Component
 public class StudentConverter {
 
+  /**
+   * 受講生情報とコース情報を紐づけて受講生詳細一覧を作成します。 コース情報は受講生ごとに複数存在するため、受講生ごとに対応するコース情報を設定します。
+   *
+   * @param students 受講生情報一覧
+   * @param courses  コース情報一覧
+   * @return 受講生詳細一覧
+   */
   public List<StudentDetail> convertStudentDetails(List<Student> students,
       List<StudentCourse> courses) {
     List<StudentDetail> studentDetails = new ArrayList<>();
@@ -24,4 +34,5 @@ public class StudentConverter {
     });
     return studentDetails;
   }
+
 }
