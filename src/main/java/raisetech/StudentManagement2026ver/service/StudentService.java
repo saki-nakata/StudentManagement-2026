@@ -80,7 +80,9 @@ public class StudentService {
    */
   @Transactional
   public void updateStudentDetail(StudentDetail detail) {
-    repository.updateStudent(detail.getStudent());
+    if (detail.getStudent() != null) {
+      repository.updateStudent(detail.getStudent());
+    }
     if (detail.getCourses() != null) {
       detail.getCourses().forEach(course -> repository.updateCourse(course));
     }

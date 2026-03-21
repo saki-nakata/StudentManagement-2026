@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# ローカル設定（秘密）
+src/main/resources/application-local.properties
+
 ### STS ###
 .apt_generated
 .classpath
