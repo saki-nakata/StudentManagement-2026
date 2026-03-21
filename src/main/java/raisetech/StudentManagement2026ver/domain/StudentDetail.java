@@ -1,6 +1,7 @@
 package raisetech.StudentManagement2026ver.domain;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,10 @@ import raisetech.StudentManagement2026ver.data.StudentCourse;
 @JsonPropertyOrder({"student", "courses"})
 public class StudentDetail {
 
+  @Valid
   private Student student;
+
+  @Valid
   private List<StudentCourse> courses;
 
 }
