@@ -15,7 +15,9 @@ import raisetech.StudentManagement2026ver.domain.StudentDetail;
 public class StudentConverter {
 
   /**
-   * 受講生情報とコース情報を紐づけて受講生詳細一覧を作成します。 コース情報は受講生ごとに複数存在するため、受講生ごとに対応するコース情報を設定します。
+   * 受講生情報とコース情報を紐づけて受講生詳細一覧を作成します。
+   * <p>
+   * 各受講生に対応するコース情報を設定します。
    *
    * @param students 受講生情報一覧
    * @param courses  コース情報一覧

@@ -42,14 +42,18 @@ public interface StudentRepository {
   List<StudentCourse> getCoursesByStudentId(int studentId);
 
   /**
-   * 受講生情報を登録します。 IDは自動採番で設定されます。
+   * 受講生情報を登録します。
+   * <p>
+   * IDは自動採番で設定されます。
    *
    * @param student 受講生情報
    */
   void registerStudent(Student student);
 
   /**
-   * コース情報を登録します。 IDは自動採番で設定されます。
+   * コース情報を登録します。
+   * <p>
+   * IDは自動採番で設定されます。
    *
    * @param course コース情報
    */
@@ -59,14 +63,16 @@ public interface StudentRepository {
    * 受講生情報を更新します。
    *
    * @param student 受講生情報
+   * @return 更新された件数
    */
-  void updateStudent(Student student);
+  int updateStudent(Student student);
 
   /**
    * コース情報を更新します。
    *
    * @param course コース情報
+   * @return 更新された件数
    */
-  void updateCourse(StudentCourse course);
+  int updateCourse(StudentCourse course);
 
 }
