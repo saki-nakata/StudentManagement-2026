@@ -8,6 +8,7 @@ import raisetech.StudentManagement2026ver.controller.converter.StudentConverter;
 import raisetech.StudentManagement2026ver.data.Student;
 import raisetech.StudentManagement2026ver.data.StudentCourse;
 import raisetech.StudentManagement2026ver.domain.StudentDetail;
+import raisetech.StudentManagement2026ver.exception.NotFoundException;
 import raisetech.StudentManagement2026ver.repository.StudentRepository;
 
 /**
@@ -38,28 +39,42 @@ public class StudentService {
 
   /**
    * 指定した受講生IDに紐づく受講生詳細を取得します。
+   * <p>
+   * 指定した受講生IDが存在しない場合は例外が発生します。
    *
    * @param id 受講生ID
    * @return 受講生詳細
    */
   public StudentDetail getStudentDetail(int id) {
     Student student = repository.getStudent(id);
+    if (student == null) {
+      throw new NotFoundException("受講生ID " + id + " に該当するデータは見つかりませんでした。");
+    }
     List<StudentCourse> courses = repository.getCoursesByStudentId(id);
     return new StudentDetail(student, courses);
   }
 
   /**
-   * 受講生詳細を登録します。 受講生情報とコース情報をそれぞれ登録します。
+   * 受講生詳細を登録します。
+   * <p>
+   * 登録対象の受講生情報が null の場合は例外が発生します。 コース情報が null または空の場合は登録されません。
    *
    * @param detail 受講生詳細
+   * @return 登録後の受講生詳細
    */
   @Transactional
-  public void registerStudentDetail(StudentDetail detail) {
+  public StudentDetail registerStudentDetail(StudentDetail detail) {
     Student student = detail.getStudent();
+    if (student == null) {
+      throw new IllegalArgumentException("登録する受講生情報がありません。");
+    }
     repository.registerStudent(student);
-    StudentCourse course = detail.getCourses().get(0);
-    initCourse(course, student);
-    repository.registerCourse(course);
+    if (detail.getCourses() != null && !detail.getCourses().isEmpty()) {
+      StudentCourse course = detail.getCourses().get(0);
+      initCourse(course, student);
+      repository.registerCourse(course);
+    }
+    return detail;
   }
 
   /**
@@ -74,17 +89,58 @@ public class StudentService {
   }
 
   /**
-   * 受講生詳細を更新します。 受講生情報およびコース情報をそれぞれ更新します。
+   * 受講生詳細を更新します。
    *
    * @param detail 受講生詳細
+   * @param id     受講生ID
+   * @return 更新後の受講生詳細
    */
   @Transactional
-  public void updateStudentDetail(StudentDetail detail) {
-    if (detail.getStudent() != null) {
-      repository.updateStudent(detail.getStudent());
+  public StudentDetail updateStudentDetail(StudentDetail detail, int id) {
+    updateStudent(detail.getStudent(), id);
+    updateCourses(detail.getCourses(), id);
+    return detail;
+  }
+
+  /**
+   * 受講生情報を更新します。
+   * <p>
+   * 受講生情報がnullの場合は何もせず終了します。 指定した受講生IDが存在しない場合は例外が発生します。
+   *
+   * @param student 受講生情報
+   * @param id      受講生ID
+   */
+  private void updateStudent(Student student, int id) {
+    if (student == null) {
+      return;
     }
-    if (detail.getCourses() != null) {
-      detail.getCourses().forEach(course -> repository.updateCourse(course));
+    student.setId(id);
+    int updated = repository.updateStudent(student);
+    if (updated == 0) {
+      throw new NotFoundException(
+          "受講生ID " + student.getId() + " に該当するデータは見つかりませんでした。");
+    }
+  }
+
+  /**
+   * コース情報を更新します。
+   * <p>
+   * コース情報一覧がnullの場合は何もせず終了します。 指定したコースIDが存在しない場合は例外が発生します。
+   *
+   * @param courses コース情報一覧
+   * @param id      受講生ID
+   */
+  private void updateCourses(List<StudentCourse> courses, int id) {
+    if (courses == null) {
+      return;
+    }
+    for (StudentCourse course : courses) {
+      course.setStudentId(id);
+      int updated = repository.updateCourse(course);
+      if (updated == 0) {
+        throw new NotFoundException(
+            "コースID " + course.getId() + " に該当するデータは見つかりませんでした。");
+      }
     }
   }
 
