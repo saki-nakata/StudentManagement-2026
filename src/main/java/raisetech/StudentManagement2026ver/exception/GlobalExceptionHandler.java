@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -76,6 +79,38 @@ public class GlobalExceptionHandler {
   }
 
   /**
+   * 必須のリクエストパラメータが不足している場合に呼び出される例外処理です。
+   *
+   * @param ex      発生したパラメータ不足の例外
+   * @param request HTTPリクエスト情報
+   * @return HTTPステータス400（Bad Request）とエラー情報
+   */
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
+      MissingServletRequestParameterException ex, HttpServletRequest request) {
+    log.error("MissingServletRequestParameterException: {}", ex.getMessage(), ex);
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+    ErrorResponse error = buildErrorMessage(status, "必須パラメータが不足", ex, request);
+    return ResponseEntity.status(status).body(error);
+  }
+
+  /**
+   * リクエストボディの形式が不正な場合に呼び出される例外処理です。
+   *
+   * @param ex      発生したリクエスト読み取りエラーの例外
+   * @param request HTTPリクエスト情報
+   * @return HTTPステータス400（Bad Request）とエラー情報
+   */
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
+      HttpMessageNotReadableException ex, HttpServletRequest request) {
+    log.error("HttpMessageNotReadableException: {}", ex.getMessage(), ex);
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+    ErrorResponse error = buildErrorMessage(status, "リクエスト形式が不正", ex, request);
+    return ResponseEntity.status(status).body(error);
+  }
+
+  /**
    * 不正な引数が指定された場合に呼び出される例外処理です。
    *
    * @param ex      発生した引数不正の例外
@@ -101,7 +136,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<ErrorResponse> handleAccessDeniedException(
       AccessDeniedException ex, HttpServletRequest request) {
-    log.error("AccessDeniedException", ex);
+    log.error("AccessDeniedException: {}", ex.getMessage(), ex);
     HttpStatus status = HttpStatus.FORBIDDEN;
     ErrorResponse error = buildErrorMessage(status, "アクセス権限がない", ex, request);
     return ResponseEntity.status(status).body(error);
@@ -136,6 +171,22 @@ public class GlobalExceptionHandler {
     log.error("NotFoundException", ex);
     HttpStatus status = HttpStatus.NOT_FOUND;
     ErrorResponse error = buildErrorMessage(status, "指定されたデータは存在しない", ex, request);
+    return ResponseEntity.status(status).body(error);
+  }
+
+  /**
+   * サポートされていないHTTPメソッドが指定された場合に呼び出される例外処理です。
+   *
+   * @param ex      発生したHTTPメソッド不正の例外
+   * @param request HTTPリクエスト情報
+   * @return HTTPステータス405（Method Not Allowed）とエラー情報
+   */
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
+      HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
+    log.error("HttpRequestMethodNotSupportedException: {}", ex.getMessage(), ex);
+    HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
+    ErrorResponse error = buildErrorMessage(status, "HTTPメソッドが不正", ex, request);
     return ResponseEntity.status(status).body(error);
   }
 
