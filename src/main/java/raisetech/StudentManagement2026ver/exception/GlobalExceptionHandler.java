@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
   (MethodArgumentNotValidException ex, HttpServletRequest request) {
     log.error("MethodArgumentNotValidException: {}", ex.getMessage(), ex);
     HttpStatus status = HttpStatus.BAD_REQUEST;
-    ErrorResponse error = buildErrorMessage(status, "バリデーションエラー", ex, request);
+    ErrorResponse error = buildErrorMessage(status, "入力値が不正", ex, request);
     return ResponseEntity.status(status).body(error);
   }
 
@@ -57,7 +57,8 @@ public class GlobalExceptionHandler {
   (ConstraintViolationException ex, HttpServletRequest request) {
     log.error("ConstraintViolationException: {}", ex.getMessage(), ex);
     HttpStatus status = HttpStatus.BAD_REQUEST;
-    ErrorResponse error = buildErrorMessage(status, "パラメータが不正", ex, request);
+    ErrorResponse error = buildErrorMessage(status, "パラメータの値が不正", ex,
+        request);
     return ResponseEntity.status(status).body(error);
   }
 
@@ -121,7 +122,7 @@ public class GlobalExceptionHandler {
       IllegalArgumentException ex, HttpServletRequest request) {
     log.error("IllegalArgumentException: {}", ex.getMessage(), ex);
     HttpStatus status = HttpStatus.BAD_REQUEST;
-    ErrorResponse error = buildErrorMessage(status, "引数が不正", ex, request);
+    ErrorResponse error = buildErrorMessage(status, "リクエスト内容が不正", ex, request);
     return ResponseEntity.status(status).body(error);
   }
 
