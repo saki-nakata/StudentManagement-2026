@@ -29,7 +29,7 @@ public class StudentService {
   /**
    * 受講生詳細一覧を取得します。
    *
-   * @return 受講生情報一覧
+   * @return 受講生詳細一覧
    */
   public List<StudentDetail> getStudentDetails() {
     List<Student> students = repository.getStudents();
