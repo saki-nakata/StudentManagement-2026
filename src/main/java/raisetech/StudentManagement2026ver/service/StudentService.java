@@ -71,7 +71,7 @@ public class StudentService {
     repository.registerStudent(student);
     if (detail.getCourses() != null && !detail.getCourses().isEmpty()) {
       StudentCourse course = detail.getCourses().get(0);
-      initCourse(course, student);
+      initCourse(course, student.getId());
       repository.registerCourse(course);
     }
     return detail;
@@ -80,11 +80,11 @@ public class StudentService {
   /**
    * コース情報登録時の初期値を設定します。
    *
-   * @param course  コース情報
-   * @param student 受講生情報
+   * @param course    コース情報
+   * @param studentId 受講生ID
    */
-  private void initCourse(StudentCourse course, Student student) {
-    course.setStudentId(student.getId());
+  void initCourse(StudentCourse course, int studentId) {
+    course.setStudentId(studentId);
     course.setEndDate(course.getStartDate().plusYears(1));
   }
 
@@ -110,7 +110,7 @@ public class StudentService {
    * @param student 受講生情報
    * @param id      受講生ID
    */
-  private void updateStudent(Student student, int id) {
+  void updateStudent(Student student, int id) {
     if (student == null) {
       return;
     }
@@ -130,7 +130,7 @@ public class StudentService {
    * @param courses コース情報一覧
    * @param id      受講生ID
    */
-  private void updateCourses(List<StudentCourse> courses, int id) {
+  void updateCourses(List<StudentCourse> courses, int id) {
     if (courses == null) {
       return;
     }

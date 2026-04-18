@@ -41,7 +41,7 @@ public class Student {
   @Size(max = 30, message = "30桁以内で入力してください。")
   private String nickname;
 
-  @Schema(description = "メールアドレス", requiredMode = REQUIRED, maxLength = 50, example = "raise-tech@example.com")
+  @Schema(description = "メールアドレス", format = "email", requiredMode = REQUIRED, maxLength = 50, example = "raise-tech@example.com")
   @NotBlank(message = "メールアドレスを入力してください。")
   @Size(max = 50, message = "50桁以内で入力してください。")
   @Email(message = "有効なメールアドレスを入力してください。")

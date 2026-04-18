@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import lombok.Getter;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @JsonPropertyOrder({"id", "studentId", "courseName", "startDate", "endDate"})
 public class StudentCourse {
 
-  @Schema(description = "コースID", minimum = "1", maximum = "9999", accessMode = Schema.AccessMode.READ_ONLY, example = "7")
+  @Schema(description = "コースID", minimum = "1", maximum = "50000", accessMode = Schema.AccessMode.READ_ONLY, example = "7")
   private int id;
 
   @Schema(description = "受講生ID", example = "5")
@@ -38,7 +39,8 @@ public class StudentCourse {
   )
   private String courseName;
 
-  @Schema(description = "受講開始日", format = "date", example = "2026-01-01")
+  @Schema(description = "受講開始日", format = "date", requiredMode = REQUIRED, example = "2026-01-01")
+  @NotNull(message = "受講開始日を入力してください。")
   @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDate startDate;
 
